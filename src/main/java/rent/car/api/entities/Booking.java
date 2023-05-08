@@ -1,5 +1,9 @@
 package rent.car.api.entities;
 
+import java.io.Serializable;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -16,15 +20,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Entity
-public class Booking {
+public class Booking implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@OneToMany(fetch = FetchType.LAZY)
-	private Car car;
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	private Utilisateur utilisateur;
-	private String start;
-	private String end;
+	private String debut; 
+	private String fin;
 	private double cost;
+	@OneToMany(cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER)
+	private Set<Car> cars;
 }
